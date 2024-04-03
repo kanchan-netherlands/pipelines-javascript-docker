@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: devopsyuvapipelinesjavascriptdocker 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devopsyuvapipelinesjavascriptdocker
+  template:
+    metadata:
+      labels:
+        app: devopsyuvapipelinesjavascriptdocker 
+    spec:
+      containers:
+        - name: devopsyuvapipelinesjavascriptdocker 
+          image: aksvisualpathregistry.azurecr.io/devopsyuvapipelinesjavascriptdocker
+          ports:
+          - containerPort: 8080
