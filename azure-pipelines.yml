@@ -36,14 +36,26 @@ stages:
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
-        command: buildAndPush
+        command: build
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
 
-    - upload: manifests
+    - script: |
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.18.3
+        trivy image ubuntudemo.azurecr.io/ubuntunginx:latest
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        containerRegistry: '$(dockerRegistryServiceConnection)'
+        repository: '$(imageRepository)'
+        command: 'Push'
+        tags: '$(tag)'
+
+    - publish: $(System.DefaultWorkingDirectory)/manifests
       artifact: manifests
 
 - stage: Deploy
