@@ -42,10 +42,11 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+          latest
 
     - script: |
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.18.3
-        trivy image ubuntudemo.azurecr.io/ubuntunginx:latest
+        trivy image aksvisualpathregistry.azurecr.io/devopsyuvapipelinesjavascriptdocker:latest
 
     - task: Docker@2
       displayName: Build and push an image to container registry
